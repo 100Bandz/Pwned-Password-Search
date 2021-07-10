@@ -10,19 +10,14 @@ namespace Pwned_Password_Search
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Please enter your password: ");
+            Console.Write("Please enter your password: ");
 
             String input = Console.ReadLine();
-
-            if (input == null)
-            {
-                return;
-            }
 
             //Convert the String into a byte array
             Byte[] DataArray;
 
-            DataArray = Encoding.ASCII.GetBytes(input);
+            DataArray = Encoding.UTF8.GetBytes(input);
 
             //Compute the hash of DataArray
             HashAlgorithm SHA = SHA1.Create();
@@ -37,17 +32,14 @@ namespace Pwned_Password_Search
                 StrBuild.AppendFormat("{0:x2}", ele);
             }
 
-            String HexString = StrBuild.ToString();
+            String HexString = StrBuild.ToString().ToUpper();
+            Console.WriteLine($"The SHA1 hash of {input} is: {HexString}");
 
-            Console.Write(HexString);
-            Console.WriteLine();
 
             String first5 = HexString.Substring(0, 5);
 
             String url = "https://api.pwnedpasswords.com/range/" + first5;
 
-            Console.Write(first5);
-            Console.WriteLine();
 
             //Create request for the URL
             WebRequest request = WebRequest.Create(url);
@@ -58,19 +50,11 @@ namespace Pwned_Password_Search
 
             StreamReader reader = new StreamReader(dataStream);
 
-            /*string responseFromServer = reader.ReadToEnd();
 
-            Console.WriteLine(responseFromServer);*/
-
-            String lineToCheck = reader.ReadLine();
-
-            //Need a loop 
-
-
+            string hashToCheck = HexString.Substring(5);
             while (true)
             {
-                bool equals = false;
-
+                String lineToCheck = reader.ReadLine();
 
                 if (lineToCheck == null)
                 {
@@ -78,46 +62,22 @@ namespace Pwned_Password_Search
                     reader.Close();
                     dataStream.Close();
                     response.Close();
-                    return;
+                    break;
                 }
 
-                if (lineToCheck.Length == HexString.Length)
-                {
-                    int i = 0;
+                String[] split = lineToCheck.Split(":");
 
-                    while ((i < lineToCheck.Length) && (lineToCheck[i] == HexString[i]))
-                    {
-                        i += 1;
-                    }
-
-                    if (i == lineToCheck.Length)
-                    {
-                        equals = true;
-                    }
-                }
-
-                if (equals)
+                if (split[0] == hashToCheck)
                 {
                     Console.WriteLine("Password has been compromised");
                     reader.Close();
                     dataStream.Close();
                     response.Close();
-                }
-                else
-                {
-                    Console.WriteLine("hashes are different");
-                    reader.Close();
-                    dataStream.Close();
-                    response.Close();
+                    break;
                 }
             }
-            
 
-
-
-
-
-
+            Console.ReadKey();
 
         }
     }
