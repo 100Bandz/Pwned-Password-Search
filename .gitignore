@@ -9,3 +9,11 @@
 *.cache
 *.txt
 .vs/Pwned Password Search/v16/.suo
+*.cache
+.vs/Pwned Password Search/v16/.suo
+*.v2
+obj/Debug/net5.0/Pwned Password Search.csproj.AssemblyReference.cache
+.vs/Pwned Password Search/v16/.suo
+*.editorconfig
+*.cs
+.vs/Pwned Password Search/v16/.suo

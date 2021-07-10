@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
+using System.IO;
+using System.Net;
 
 namespace Pwned_Password_Search
 {
@@ -38,6 +40,84 @@ namespace Pwned_Password_Search
             String HexString = StrBuild.ToString();
 
             Console.Write(HexString);
+            Console.WriteLine();
+
+            String first5 = HexString.Substring(0, 5);
+
+            String url = "https://api.pwnedpasswords.com/range/" + first5;
+
+            Console.Write(first5);
+            Console.WriteLine();
+
+            //Create request for the URL
+            WebRequest request = WebRequest.Create(url);
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            Stream dataStream = response.GetResponseStream();
+
+            StreamReader reader = new StreamReader(dataStream);
+
+            /*string responseFromServer = reader.ReadToEnd();
+
+            Console.WriteLine(responseFromServer);*/
+
+            String lineToCheck = reader.ReadLine();
+
+            //Need a loop 
+
+
+            while (true)
+            {
+                bool equals = false;
+
+
+                if (lineToCheck == null)
+                {
+                    Console.WriteLine("Password was not found");
+                    reader.Close();
+                    dataStream.Close();
+                    response.Close();
+                    return;
+                }
+
+                if (lineToCheck.Length == HexString.Length)
+                {
+                    int i = 0;
+
+                    while ((i < lineToCheck.Length) && (lineToCheck[i] == HexString[i]))
+                    {
+                        i += 1;
+                    }
+
+                    if (i == lineToCheck.Length)
+                    {
+                        equals = true;
+                    }
+                }
+
+                if (equals)
+                {
+                    Console.WriteLine("Password has been compromised");
+                    reader.Close();
+                    dataStream.Close();
+                    response.Close();
+                }
+                else
+                {
+                    Console.WriteLine("hashes are different");
+                    reader.Close();
+                    dataStream.Close();
+                    response.Close();
+                }
+            }
+            
+
+
+
+
+
+
 
         }
     }
