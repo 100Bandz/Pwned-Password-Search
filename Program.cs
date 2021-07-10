@@ -11,6 +11,7 @@ namespace Pwned_Password_Search
         static void Main(string[] args)
         {
             Console.Write("Please enter your password: ");
+            Console.WriteLine();
 
             String input = Console.ReadLine();
 
@@ -34,6 +35,7 @@ namespace Pwned_Password_Search
 
             String HexString = StrBuild.ToString().ToUpper();
             Console.WriteLine($"The SHA1 hash of {input} is: {HexString}");
+            Console.WriteLine();
 
 
             String first5 = HexString.Substring(0, 5);
