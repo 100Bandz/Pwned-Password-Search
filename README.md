@@ -1,3 +1,6 @@
 # Pwned-Password-Search
  
-A small project I made based on Dr Mike Pound's video on Computerphile: https://youtu.be/hhUb5iknVJs
+A password checker I made using haveibeenpwned's API and C#'s cryptography library!
+ 
+ 
+This is a small project I made based on Dr Mike Pound's video on Computerphile: https://youtu.be/hhUb5iknVJs
