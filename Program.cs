@@ -50,7 +50,7 @@ namespace Pwned_Password_Search
 
             StreamReader reader = new StreamReader(dataStream);
 
-
+            //Split the hashes and compare them to see if they match
             string hashToCheck = HexString.Substring(5);
             while (true)
             {
