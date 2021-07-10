@@ -11,7 +11,6 @@ namespace Pwned_Password_Search
         static void Main(string[] args)
         {
             Console.Write("Please enter your password: ");
-            Console.WriteLine();
 
             String input = Console.ReadLine();
 
